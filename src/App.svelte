@@ -21,6 +21,11 @@
     }, 500);
   });
   
+  const onItemAddedHandler = event => {
+	items.push(event.detail.item);
+	visibleItems = items.map((a) => ({ ...a }));
+	visibleItems = visibleItems;
+  }
 </script>
 
 <style type="text/scss">
@@ -55,5 +60,5 @@
 
   <SearchBar />
   <TodoList items={visibleItems} />
-  <NewItem />
+  <NewItem on:message={onItemAddedHandler}/>
 </main>
