@@ -6,15 +6,17 @@
   $: console.log(taskName);
 
   const btnAdd_Clicked = (_) => {
-    const item = {
-      id: Math.floor(Math.random() * 100) + 1,
-      title: taskName,
-      is_done: false,
-    };
-    dispatch("message", {
-      item: item,
-    });
-    taskName = "";
+    if (taskName !== "") {
+      const item = {
+        id: Math.floor(Math.random() * 100) + 7,
+        title: taskName,
+        is_done: false,
+      };
+      dispatch("message", {
+        item: item,
+      });
+      taskName = "";
+    }
   };
 
   const txtTaskName_KeyUp = (e) => {

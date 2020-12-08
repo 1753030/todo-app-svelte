@@ -1,10 +1,33 @@
 <script>
-    
+  import { createEventDispatcher } from "svelte";
+  const dispatch = createEventDispatcher();
+  let term = "";
+  const txtTerm_KeyUp = (e) => {
+    if (e.keyCode === 27) {
+      btnClear_Clicked();
+    }
+  };
+
+  $: {
+    console.log(term);
+    dispatch("message", {
+      term: term,
+    });
+  }
+
+//   const txtTerm_Changed = (_) => {
+//     console.log(term);
+//     dispatch("message", {
+//       term: term,
+//     });
+//   };
+
+  const btnClear_Clicked = (_) => {
+    term = "";
+  };
 </script>
 
-<type>
-
-</type>
+<type />
 
 <div>
   <!-- svelte-ignore a11y-label-has-associated-control -->
@@ -12,8 +35,10 @@
     Filter tasks (by name)
     <div class="fg">
       <input
-        type="text"/>
-      <button type="button" >Clear</button>
+        bind:value={term}
+        on:keyup={txtTerm_KeyUp}
+        type="text" />
+      <button on:click={btnClear_Clicked} type="button">Clear</button>
     </div>
   </label>
 </div>

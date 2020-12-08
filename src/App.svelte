@@ -5,34 +5,56 @@
   import NewItem from "./components/NewItem.svelte";
   export let name;
 
+  let search = {is_searching: false, term: ""};
   let items = [];
   let visibleItems = [];
   onMount(async () => {
-    setTimeout( _ => {
-    	items = [
+    setTimeout((_) => {
+      items = [
         { id: 1, title: "Pay Bills", is_done: true },
         { id: 2, title: "Learn ReactJS", is_done: false },
         { id: 3, title: "Learn NodeJS Express", is_done: false },
         { id: 4, title: "Learn PassportJS", is_done: false },
         { id: 5, title: "Complete Final Project", is_done: false },
         { id: 6, title: "Have Dinner", is_done: true },
-	  ];
-	  visibleItems = items.map((a) => ({ ...a }));
+      ];
+      visibleItems = items.map((a) => ({ ...a }));
     }, 500);
   });
-  
-  const onItemAddedHandler = event => {
-	items.push(event.detail.item);
+
+  const onItemAddedHandler = (event) => {
+    items.push(event.detail.item);
 	visibleItems = items.map((a) => ({ ...a }));
-	visibleItems = visibleItems;
+	searchTask(search.term);
+    visibleItems = visibleItems;
   };
 
-  const onItemDeleteHanlder = event => {
-	let index = items.findIndex((item => item.id == event.detail.id));
-	items[index].is_done = true;
+  const onItemDeleteHanlder = (event) => {
+    let index = items.findIndex((item) => item.id == event.detail.id);
+    items[index].is_done = true;
 	visibleItems = items.map((a) => ({ ...a }));
-	visibleItems = visibleItems;
-	console.log(visibleItems[index]);
+	searchTask(search.term);
+    visibleItems = visibleItems;
+    console.log(visibleItems[index]);
+  };
+
+  const searchTask = term => {
+	let termLowerCase = term.toLowerCase();
+	visibleItems = items.filter(item => item.title.toLowerCase().includes(termLowerCase))
+  };
+
+  const onSearchTermChangedHandler = (event) => {
+    if (event.detail.term.length === 0) {
+	  visibleItems = items.map((a) => ({ ...a }));
+	  visibleItems = visibleItems;
+	  search.is_searching = false;
+	  search.term = "";
+      return;
+	}
+	let termLowerCase = event.detail.term.toLowerCase();
+	searchTask(event.detail.term);
+	search.is_searching = true;
+	search.term = event.detail.term;
   };
 </script>
 
@@ -66,7 +88,7 @@
 <main>
   <h1>{name}!</h1>
 
-  <SearchBar />
+  <SearchBar on:message={onSearchTermChangedHandler} />
   <TodoList on:message={onItemDeleteHanlder} items={visibleItems} />
-  <NewItem on:message={onItemAddedHandler}/>
+  <NewItem on:message={onItemAddedHandler} />
 </main>
