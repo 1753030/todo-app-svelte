@@ -25,7 +25,15 @@
 	items.push(event.detail.item);
 	visibleItems = items.map((a) => ({ ...a }));
 	visibleItems = visibleItems;
-  }
+  };
+
+  const onItemDeleteHanlder = event => {
+	let index = items.findIndex((item => item.id == event.detail.id));
+	items[index].is_done = true;
+	visibleItems = items.map((a) => ({ ...a }));
+	visibleItems = visibleItems;
+	console.log(visibleItems[index]);
+  };
 </script>
 
 <style type="text/scss">
@@ -59,6 +67,6 @@
   <h1>{name}!</h1>
 
   <SearchBar />
-  <TodoList items={visibleItems} />
+  <TodoList on:message={onItemDeleteHanlder} items={visibleItems} />
   <NewItem on:message={onItemAddedHandler}/>
 </main>

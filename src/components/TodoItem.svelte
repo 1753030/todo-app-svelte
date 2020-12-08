@@ -1,5 +1,14 @@
 <script>
+import { createEventDispatcher } from "svelte";
+const dispatch = createEventDispatcher();
 export let item;
+
+// event forwarding
+const btnAdd_Clicked = _ => {
+    dispatch("message", {
+      id: item.id,
+    });
+};
 </script>
 
 <type>
@@ -9,6 +18,6 @@ export let item;
 <li class={item.is_done ? 'done' : ''}>
     {item.title}
     {#if !item.is_done}
-    <button>Delete</button>
+    <button on:click={btnAdd_Clicked} >Delete</button>
     {/if}
 </li>

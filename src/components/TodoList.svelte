@@ -10,7 +10,7 @@ export let items;
   <h3>Todo</h3>
   <ul>
     {#each items as item (item.id)}
-        <TodoItem item={item}></TodoItem>
+        <TodoItem on:message item={item}></TodoItem>
     {/each}
   </ul>
 </div>
