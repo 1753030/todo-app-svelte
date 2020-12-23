@@ -3,23 +3,38 @@
   import SearchBar from "./components/SearchBar.svelte";
   import TodoList from "./components/TodoList.svelte";
   import NewItem from "./components/NewItem.svelte";
+  import {todos} from "./store";
+  import { onDestroy } from 'svelte';
   export let name;
 
   let search = {is_searching: false, term: ""};
   let items = [];
   let visibleItems = [];
+  
+  let myStoreContent = [];
+  const unsubscribe = todos.subscribe(value => myStoreContent = value);
+  onDestroy(unsubscribe)
+
+  $: console.log(myStoreContent);
+
   onMount(async () => {
     setTimeout((_) => {
-      items = [
-        { id: 1, title: "Pay Bills", is_done: true },
-        { id: 2, title: "Learn ReactJS", is_done: false },
-        { id: 3, title: "Learn NodeJS Express", is_done: false },
-        { id: 4, title: "Learn PassportJS", is_done: false },
-        { id: 5, title: "Complete Final Project", is_done: false },
-        { id: 6, title: "Have Dinner", is_done: true },
-      ];
+      // items = [
+      //   { id: 1, title: "Pay Bills", is_done: true },
+      //   { id: 2, title: "Learn ReactJS", is_done: false },
+      //   { id: 3, title: "Learn NodeJS Express", is_done: false },
+      //   { id: 4, title: "Learn PassportJS", is_done: false },
+      //   { id: 5, title: "Complete Final Project", is_done: false },
+      //   { id: 6, title: "Have Dinner", is_done: true },
+      // ];
+      
+      items = myStoreContent;
       visibleItems = items.map((a) => ({ ...a }));
     }, 500);
+  });
+
+  onDestroy(() => {
+    localStorage.clear();
   });
 
   const onItemAddedHandler = (event) => {
@@ -27,6 +42,7 @@
 	visibleItems = items.map((a) => ({ ...a }));
 	searchTask(search.term);
     visibleItems = visibleItems;
+    console.log(myStoreContent);
   };
 
   const onItemDeleteHanlder = (event) => {

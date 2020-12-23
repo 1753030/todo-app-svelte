@@ -1,5 +1,6 @@
 <script>
   import { createEventDispatcher } from "svelte";
+  import {todos} from "../store";
   const dispatch = createEventDispatcher();
   let term = "";
   const txtTerm_KeyUp = (e) => {
@@ -9,7 +10,8 @@
   };
 
   $: {
-    console.log(term);
+    console.log("Search: " + term);
+    console.log($todos);
     dispatch("message", {
       term: term,
     });

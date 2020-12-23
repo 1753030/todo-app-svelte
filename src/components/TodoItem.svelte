@@ -4,7 +4,7 @@ const dispatch = createEventDispatcher();
 export let item;
 
 // event forwarding
-const btnAdd_Clicked = _ => {
+const btnDelete_Clicked = _ => {
     dispatch("message", {
       id: item.id,
     });
@@ -18,6 +18,6 @@ const btnAdd_Clicked = _ => {
 <li class={item.is_done ? 'done' : ''}>
     {item.title}
     {#if !item.is_done}
-    <button on:click={btnAdd_Clicked} >Delete</button>
+    <button on:click={btnDelete_Clicked} >Delete</button>
     {/if}
 </li>
